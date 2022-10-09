@@ -1,8 +1,43 @@
-PRAGMA foreign_keys=on; -- Turns foreign key support in SQLite3 on
+PRAGMA foreign_keys = on;
+
+-- Turns foreign key support in SQLite3 on
 -- Your code here
 
-INSERT INTO owners
-  (first_name, last_name)
+DROP TABLE if EXISTS cat_owners;
+
+DROP TABLE if EXISTS toys;
+
+DROP TABLE if EXISTS owners;
+
+DROP TABLE if EXISTS cats;
+
+CREATE TABLE owners(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name TEXT,
+  last_name TEXT
+);
+
+CREATE TABLE cats(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  birth_year INTEGER
+);
+
+CREATE TABLE cat_owners(
+  cat_id INTEGER,
+  owner_id INTEGER,
+  FOREIGN KEY (cat_id) REFERENCES cats(id) on DELETE CASCADE FOREIGN KEY (owner_id) REFERENCES owners(id) on DELETE CASCADE
+);
+
+CREATE TABLE toys(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  cat_id INTEGER,
+  FOREIGN KEY (cat_id) REFERENCES cats(id) on DELETE CASCADE
+);
+
+INSERT INTO
+  owners (first_name, last_name)
 VALUES
   ('Nathan', 'Shanahan'),
   ('Joycelyn', 'Cummerata'),
@@ -12,8 +47,8 @@ VALUES
   ('Jonathan', 'Arbuckle'),
   ('Hermione', 'Granger');
 
-INSERT INTO cats
-  (name, birth_year)
+INSERT INTO
+  cats (name, birth_year)
 VALUES
   ('Smudge', 2014),
   ('Molly', 2015),
@@ -24,8 +59,8 @@ VALUES
   ('Garfield', 2009),
   ('Crookshanks', 2017);
 
-INSERT INTO cat_owners
-  (cat_id, owner_id)
+INSERT INTO
+  cat_owners (cat_id, owner_id)
 VALUES
   (1, 1),
   (1, 2),
@@ -37,8 +72,8 @@ VALUES
   (7, 6),
   (8, 7);
 
-INSERT INTO toys
-  (cat_id, name)
+INSERT INTO
+  toys (cat_id, name)
 VALUES
   (1, 'Catnip Mouse'),
   (2, 'Feather Wand'),
@@ -51,5 +86,7 @@ VALUES
   (7, 'Cheetos'),
   (8, 'Yarn');
 
-DELETE FROM cats
-WHERE cats.name = 'Smudge';
+DELETE FROM
+  cats
+WHERE
+  cats.name = 'Smudge';
